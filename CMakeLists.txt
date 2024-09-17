@@ -5,7 +5,22 @@ if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.15")
     cmake_policy(SET CMP0091 NEW)
 endif ()
 
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
 project(Zydis VERSION 4.0.0.0 LANGUAGES C)
+
+set(Zydis
+        CMAKE_CXX_FLAGS
+        CMAKE_CXX_FLAGS_DEBUG
+        CMAKE_CXX_FLAGS_RELEASE
+        CMAKE_C_FLAGS
+        CMAKE_C_FLAGS_DEBUG
+        CMAKE_C_FLAGS_RELEASE
+        )
+
+foreach(CompilerFlag ${CompilerFlags})
+    string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
+endforeach()
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
